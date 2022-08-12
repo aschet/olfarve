@@ -2,12 +2,14 @@
 // Copyright 2022 Thomas Ascher <thomas.ascher@gmx.at>
 // SPDX-License-Identifier: MIT
 
+const OlFarve = {}
+
 // This data table is composed of the following elements:
 // CIE 1931 colour-matching functions (x_bar, y_bar, z_bar), 2 degree observer, 5 nm
 // https://cie.co.at/datatable/cie-1931-colour-matching-functions-2-degree-observer-5nm
 // CIE standard illuminant D65
 // https://cie.co.at/datatable/cie-standard-illuminant-d65
-const CIE_DATA = [
+OlFarve.CIE_DATA = [
   [380.0, 0.001368, 0.000039, 0.006450, 49.9755],
   [385.0, 0.002236, 0.000064, 0.010550, 52.3118],
   [390.0, 0.004243, 0.000120, 0.020050, 54.6482],
@@ -91,28 +93,29 @@ const CIE_DATA = [
   [780.0, 0.000042, 0.000015, 0.000000, 63.3828]
 ]
 
-function calcScaleFactor () {
-  k = 0.0
-  for (let i = 0; i < CIE_DATA.length; ++i)
-    k += CIE_DATA[i][4] * CIE_DATA[i][2]
+OlFarve.calcScaleFactor = () => {
+  let k = 0.0
+  for (let i = 0; i < OlFarve.CIE_DATA.length; ++i) {
+    k += OlFarve.CIE_DATA[i][4] * OlFarve.CIE_DATA[i][2]
+  }
   return 1.0 / k
 }
 
-const K = calcScaleFactor()
+OlFarve.K = OlFarve.calcScaleFactor()
 
 // The default transmission path in cm. Set to typical sample glass width as specified by the BJCP color guide.
 // https://www.bjcp.org/education-training/education-resources/color-guide
-const DEFAULT_PATH = 5.0
+OlFarve.DEFAULT_PATH = 5.0
 
-function summate (t, cmf) {
+OlFarve.summate = (t, cmf) => {
   let sum = 0.0
-  for (let i = 0; i < CIE_DATA.length; ++i) {
-    sum += CIE_DATA[i][4] * t[i] * CIE_DATA[i][cmf]
+  for (let i = 0; i < OlFarve.CIE_DATA.length; ++i) {
+    sum += OlFarve.CIE_DATA[i][4] * t[i] * OlFarve.CIE_DATA[i][cmf]
   }
-  return K * sum
+  return OlFarve.K * sum
 }
 
-function correctGamma (t) {
+OlFarve.correctGamma = (t) => {
   if (t <= 0.0031308) {
     t = t * 12.92
   } else {
@@ -124,34 +127,34 @@ function correctGamma (t) {
 // Implemented according to A. J. de Lange, "Color," in Brewing Materials and Processes, Elsevier, 2016, pp. 199–249.
 // Color spaced is mapped to sRGB, which requires a scaling of 1.0, instead of CIELAB. For sRGB related transformations
 // see C. Poynton, Digital Video and HD: Algorithms and Interfaces, 2nd ed. Morgan Kaufmann, 2014.
-function beerSDToSRGB (a430, l) {
-  const t = new Array(CIE_DATA.length)
-  for (let i = 0; i < CIE_DATA.length; ++i) {
-    t[i] = Math.pow(10.0, -a430 * l * (0.02465 * Math.exp(-(CIE_DATA[i][0] - 430.0) / 17.591) + 0.97535 * Math.exp(-(CIE_DATA[i][0] - 430.0) / 82.122)))
+OlFarve.beerSDToSRGB = (a430, l) => {
+  const t = new Array(OlFarve.CIE_DATA.length)
+  for (let i = 0; i < OlFarve.CIE_DATA.length; ++i) {
+    t[i] = Math.pow(10.0, -a430 * l * (0.02465 * Math.exp(-(OlFarve.CIE_DATA[i][0] - 430.0) / 17.591) + 0.97535 * Math.exp(-(OlFarve.CIE_DATA[i][0] - 430.0) / 82.122)))
   }
 
-  const x = summate(t, 1)
-  const y = summate(t, 2)
-  const z = summate(t, 3)
+  const x = OlFarve.summate(t, 1)
+  const y = OlFarve.summate(t, 2)
+  const z = OlFarve.summate(t, 3)
 
-  const r = correctGamma(x * 3.240479 + y * -1.537150 + z * -0.498535)
-  const g = correctGamma(x * -0.969256 + y * 1.875992 + z * 0.041556)
-  const b = correctGamma(x * 0.055648 + y * -0.204043 + z * 1.057311)
+  const r = OlFarve.correctGamma(x * 3.240479 + y * -1.537150 + z * -0.498535)
+  const g = OlFarve.correctGamma(x * -0.969256 + y * 1.875992 + z * 0.041556)
+  const b = OlFarve.correctGamma(x * 0.055648 + y * -0.204043 + z * 1.057311)
   return [r, g, b]
 }
 
 // Determine a color in the sRGB space in relative intensity for a given SRM rating and transmission path in cm (e.g. glass width)
-function srmToSRGB (srm, pathCM = DEFAULT_PATH) {
-  return beerSDToSRGB(srm / 12.7, pathCM)
+OlFarve.srmToSRGB = (srm, pathCM = OlFarve.DEFAULT_PATH) => {
+  return OlFarve.beerSDToSRGB(srm / 12.7, pathCM)
 }
 
 // Determine a color in the sRGB space in relative intensity for a given EBC rating and transmission path in cm (e.g. glass width)
-function ebcToSRGB (ebc, pathCM = DEFAULT_PATH) {
-  return beerSDToSRGB(ebc / 25.0, pathCM)
+OlFarve.ebcToSRGB = (ebc, pathCM = OlFarve.DEFAULT_PATH) => {
+  return OlFarve.beerSDToSRGB(ebc / 25.0, pathCM)
 }
 
 // Convert a relative intensity RGB triplet into textual hex representation
-function rgbToHex (rgb) {
+OlFarve.rgbToHex = (rgb) => {
   let text = '#'
   for (let i = 0; i < rgb.length; ++i) {
     const textPart = Math.round(rgb[i] * 255.0).toString(16)

@@ -40,7 +40,7 @@ function updateTable () {
   const path = getPath()
   const table = document.getElementById('colors')
   for (let i = 1; i <= MAX_SCALE; ++i) {
-    const color = rgbToHex(srmToSRGB(i, path))
+    const color = OlFarve.rgbToHex(OlFarve.srmToSRGB(i, path))
     const row = table.rows[i]
     row.style.backgroundColor = color
     row.cells[1].innerHTML = color
@@ -48,7 +48,7 @@ function updateTable () {
 }
 
 window.onload = (event) => {
-  document.getElementById('pathselect').value = DEFAULT_PATH
+  document.getElementById('pathselect').value = OlFarve.DEFAULT_PATH
   updatePathDisplay()
   initTable()
   updateTable()
