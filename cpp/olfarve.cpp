@@ -128,7 +128,7 @@ static double correctGamma(double t) {
 // see C. Poynton, Digital Video and HD: Algorithms and Interfaces, 2nd ed. Morgan Kaufmann, 2014.
 static RGB beerSDToSRGB(const double& a430, const double& l) {
     std::array<double, 81> t;
-    for (int i = 0; i < CIE_DATA.size(); ++i)
+    for (size_t i = 0; i < CIE_DATA.size(); ++i)
         t[i] = pow(10.0, -a430 * l * (0.02465 * exp(-(CIE_DATA[i][0] - 430.0) / 17.591) + 0.97535 * exp(-(CIE_DATA[i][0] - 430.0) / 82.122)));
 
     double x = summate(t, 1);
