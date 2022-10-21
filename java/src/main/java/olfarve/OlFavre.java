@@ -105,8 +105,8 @@ public final class OlFavre {
 
 	private static final double K = calcScaleFactor();
 	
-    // The default transmission path in cm. Set to typical sample glass width as specified by the BJCP color guide.
-    // https://www.bjcp.org/education-training/education-resources/color-guide
+	// The default transmission path in cm. Set to typical sample glass width as specified by the BJCP color guide.
+	// https://www.bjcp.org/education-training/education-resources/color-guide
 	public static final double DEFAULT_PATH = 5.0;
 
 	private static double summate(double[] t, int cmf) {

@@ -93,6 +93,7 @@ class OlFarve
         { 775.0, 0.000059, 0.000021, 0.000000, 65.0941 },
         { 780.0, 0.000042, 0.000015, 0.000000, 63.3828 }
     };
+    
     private static double CalcScaleFactor()
     {
         double k = 0.0;
@@ -124,7 +125,7 @@ class OlFarve
         return Math.Max(0.0, Math.Min(1.0, t));
     }
 
-    // Implemented according to A. J. de Lange, "Color," in Brewing Materials and Processes, Elsevier, 2016, pp. 199â€“249.
+    // Implemented according to A. J. de Lange, "Color," in Brewing Materials and Processes, Elsevier, 2016, pp. 199-249.
     // Color spaced is mapped to sRGB, which requires a scaling of 1.0, instead of CIELAB. For sRGB related transformations
     // see C. Poynton, Digital Video and HD: Algorithms and Interfaces, 2nd ed. Morgan Kaufmann, 2014.
     private static double[] BeerSDToSRGB(double a430, double l)

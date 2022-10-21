@@ -98,8 +98,7 @@ static const std::array<std::array<double, 5>, 81> CIE_DATA = { {
     { 780.0, 0.000042, 0.000015, 0.000000, 63.3828 }
 } };
 
-static double calcScaleFactor()
-{
+static double calcScaleFactor() {
     double k = 0.0;
     for (size_t i = 0; i < CIE_DATA.size(); ++i)
         k += CIE_DATA[i][4] * CIE_DATA[i][2];
