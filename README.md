@@ -1,4 +1,4 @@
-# Øl farve: beautiful beer colors for everyone
+# Øl farve: SRM/EBC sRGB color simulation for everyone
 
 <p align="center">
   <img src="/colors.png?raw=true">
