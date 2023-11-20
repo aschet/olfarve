@@ -9,17 +9,17 @@
 #include <string>
 
 namespace olfarve {
-    typedef std::array<double, 3> RGB;
+    typedef std::array<float, 3> RGB;
 
     // The default transmission path in cm. Set to typical sample glass width as specified by the BJCP color guide.
     // https://www.bjcp.org/education-training/education-resources/color-guide
-    const double DEFAULT_PATH = 5.0;
+    const float DEFAULT_PATH = 5.0;
 
     // Determine a color in the sRGB space in relative intensity for a given SRM rating and transmission path in cm (e.g. glass width)
-    RGB srmToSRGB(const double& srm, const double& pathCM = DEFAULT_PATH);
+    RGB srmToSRGB(const float& srm, const float& pathCM = DEFAULT_PATH);
 
     // Determine a color in the sRGB space in relative intensity for a given EBC rating and transmission path in cm (e.g. glass width)
-    RGB ebcToSRGB(const double& ebc, const double& pathCM = DEFAULT_PATH);
+    RGB ebcToSRGB(const float& ebc, const float& pathCM = DEFAULT_PATH);
 
     // Convert a relative intensity RGB triplet into textual hex representation
     std::string rgbToHex(const RGB& rgb);
