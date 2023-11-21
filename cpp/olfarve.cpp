@@ -118,11 +118,11 @@ static float correctGamma(float t) {
 // Implemented according to A. J. de Lange, "Color," in Brewing Materials and Processes, Elsevier, 2016, pp. 199-249.
 // Color space is mapped to sRGB, which requires a scaling of 1.0. For sRGB related transformations
 // see C. Poynton, Digital Video and HD: Algorithms and Interfaces, 2nd ed. Morgan Kaufmann, 2014.
-static RGB beerSDToSRGB(const double& a430, const double& l) {
-    double x = 0.0;
-    double y = 0.0;
-    double z = 0.0;
-    double w = 380.0;
+static RGB beerSDToSRGB(const float& a430, const float& l) {
+    float x = 0.0;
+    float y = 0.0;
+    float z = 0.0;
+    float w = 380.0;
     for (size_t i = 0; i < CIE_DATA.size(); ++i) {
         float t = pow(10.0f, -a430 * l * (0.02465f * exp(-(w - 430.0f) / 17.591f) + 0.97535f * exp(-(w - 430.0f) / 82.122f)));
         float d65 = CIE_DATA[i][3];
