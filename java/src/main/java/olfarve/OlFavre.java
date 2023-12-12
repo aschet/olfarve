@@ -8,8 +8,8 @@ import java.lang.Math;
 
 public final class OlFavre {
 	// This data table is composed of the following elements:
-	// CIE 1931 colour-matching functions (x_bar, y_bar, z_bar), 2 degree observer, 5 nm
-	// https://cie.co.at/datatable/cie-1931-colour-matching-functions-2-degree-observer-5nm
+	// CIE 1931 colour-matching functions (x_bar, y_bar, z_bar), 2 degree observer (380-780 nm, 5 nm increments)
+	// https://cie.co.at/datatable/cie-1931-colour-matching-functions-2-degree-observer
 	// CIE standard illuminant D65
 	// https://cie.co.at/datatable/cie-standard-illuminant-d65
 	private static final float[][] CIE_DATA = {
@@ -109,17 +109,17 @@ public final class OlFavre {
 	// https://www.bjcp.org/education-training/education-resources/color-guide
 	public static final float DEFAULT_PATH = 5.0f;
 
-	private static float correctGamma(float t) {
+	private static float transferColorComponent(float t) {
+		t = Math.max(0.0f, Math.min(1.0f, t));
 		if (t <= 0.0031308f)
 			t = t * 12.92f;
 		else
 			t = 1.055f * (float)Math.pow(t, 1.0f / 2.4f) - 0.055f;
-		return Math.max(0.0f, Math.min(1.0f, t));
+		return t;
 	}
 
 	// Implemented according to A. J. de Lange, "Color," in Brewing Materials and Processes, Elsevier, 2016, pp. 199-249.
-	// Color space is mapped to sRGB, which requires a scaling of 1.0. For sRGB related transformations
-	// see C. Poynton, Digital Video and HD: Algorithms and Interfaces, 2nd ed. Morgan Kaufmann, 2014.
+	// Color space is converted to sRGB via https://www.w3.org/Graphics/Color/srgb
 	private static float[] beerSDToSRGB(float a430, float l) {
 		float x = 0.0f;
     	float y = 0.0f;
@@ -138,9 +138,9 @@ public final class OlFavre {
 		y *= K;
 		z *= K;
 
-		float r = correctGamma(x * 3.240479f + y * -1.537150f + z * -0.498535f);
-		float g = correctGamma(x * -0.969256f + y * 1.875992f + z * 0.041556f);
-		float b = correctGamma(x * 0.055648f + y * -0.204043f + z * 1.057311f);
+		float r = transferColorComponent(x * 3.2406255f + y * -1.537208f + z * -0.4986286f);
+		float g = transferColorComponent(x * -0.9689307f + y * 1.8757561f + z * 0.0415175f);
+		float b = transferColorComponent(x * 0.0557101f + y * -0.2040211f + z * 1.0569959f);
 		float[] rgb = { r, g, b };
 		return rgb;
 	}

@@ -5,8 +5,8 @@
 import math
 
 # This data table is composed of the following elements:
-# CIE 1931 colour-matching functions (x_bar, y_bar, z_bar), 2 degree observer, 5 nm
-# https://cie.co.at/datatable/cie-1931-colour-matching-functions-2-degree-observer-5nm
+# CIE 1931 colour-matching functions (x_bar, y_bar, z_bar), 2 degree observer (380-780 nm, 5 nm increments)
+# https://cie.co.at/datatable/cie-1931-colour-matching-functions-2-degree-observer
 # CIE standard illuminant D65
 # https://cie.co.at/datatable/cie-standard-illuminant-d65
 CIE_DATA = [
@@ -105,16 +105,16 @@ K = calc_scale_factor()
 # https://www.bjcp.org/education-training/education-resources/color-guide
 DEFAULT_PATH = 5.0
 
-def correct_gamma(t):
+def transfer_color_component(t):
+    t = max(0.0, min(1.0, t))
     if t <= 0.0031308:
         t = t * 12.92
     else:
         t = 1.055 * math.pow(t, 1.0 / 2.4) - 0.055
-    return max(0.0, min(1.0, t))
+    return t
 
 # Implemented according to A. J. de Lange, "Color," in Brewing Materials and Processes, Elsevier, 2016, pp. 199-249.
-# Color space is mapped to sRGB, which requires a scaling of 1.0. For sRGB related transformations
-# see C. Poynton, Digital Video and HD: Algorithms and Interfaces, 2nd ed. Morgan Kaufmann, 2014.
+# Color space is converted to sRGB via https://www.w3.org/Graphics/Color/srgb
 def beer_sd_to_srgb(a430, l):
     x = 0.0
     y = 0.0
@@ -132,9 +132,9 @@ def beer_sd_to_srgb(a430, l):
     y *= K
     z *= K
 
-    r = correct_gamma(x * 3.240479 + y * -1.537150 + z * -0.498535)
-    g = correct_gamma(x * -0.969256 + y * 1.875992 + z * 0.041556)
-    b = correct_gamma(x * 0.055648 + y * -0.204043 + z * 1.057311)
+    r = transfer_color_component(x * 3.2406255 + y * -1.537208 + z * -0.4986286)
+    g = transfer_color_component(x * -0.9689307 + y * 1.8757561 + z * 0.0415175)
+    b = transfer_color_component(x * 0.0557101 + y * -0.2040211 + z * 1.0569959)
     return [r, g, b]
 
 # Determine a color in the sRGB space in relative intensity for a given SRM rating and transmission path in cm (e.g. glass width)
