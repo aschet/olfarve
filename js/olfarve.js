@@ -95,8 +95,8 @@ OlFarve.CIE_DATA = [
 
 OlFarve.calcScaleFactor = () => {
   let k = 0.0
-  for (let i = 0; i < OlFarve.CIE_DATA.length; ++i) {
-    k += OlFarve.CIE_DATA[i][3] * OlFarve.CIE_DATA[i][1]
+  for (let i of OlFarve.CIE_DATA) {
+    k += i[3] * i[1]
   }
   return 1.0 / k
 }
@@ -124,12 +124,12 @@ OlFarve.beerSDToSRGB = (a430, l) => {
   let y = 0.0
   let z = 0.0
   let w = 380.0
-  for (let i = 0; i < OlFarve.CIE_DATA.length; ++i) {
+  for (let i of OlFarve.CIE_DATA) {
     let t = Math.pow(10.0, -a430 * l * (0.02465 * Math.exp(-(w - 430.0) / 17.591) + 0.97535 * Math.exp(-(w - 430.0) / 82.122)))
-    let d65 = OlFarve.CIE_DATA[i][3]
-    x += d65 * t * OlFarve.CIE_DATA[i][0]
-    y += d65 * t * OlFarve.CIE_DATA[i][1]
-    z += d65 * t * OlFarve.CIE_DATA[i][2]
+    let d65 = i[3]
+    x += d65 * t * i[0]
+    y += d65 * t * i[1]
+    z += d65 * t * i[2]
     w += 5.0
   }
 

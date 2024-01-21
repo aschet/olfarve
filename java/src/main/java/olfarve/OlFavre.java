@@ -98,8 +98,8 @@ public final class OlFavre {
 
 	private static float calcScaleFactor() {
 	    float k = 0.0f;
-	    for (int i = 0; i < CIE_DATA.length; ++i)
-	        k += CIE_DATA[i][3] * CIE_DATA[i][1];
+	    for (float[] i : CIE_DATA)
+	        k += i[3] * i[1];
 	    return 1.0f / k;
 	}
 
@@ -125,12 +125,12 @@ public final class OlFavre {
     	float y = 0.0f;
     	float z = 0.0f;
     	float w = 380.0f;
-		for (int i = 0; i < CIE_DATA.length; ++i) {
+		for (float[] i : CIE_DATA) {
 			float t = (float)Math.pow(10.0f, -a430 * l * (0.02465f * Math.exp(-(w - 430.0f) / 17.591f) + 0.97535f * Math.exp(-(w - 430.0f) / 82.122f)));
-			float d65 = CIE_DATA[i][3];
-			x += d65 * t * CIE_DATA[i][0];
-			y += d65 * t * CIE_DATA[i][1];
-			z += d65 * t * CIE_DATA[i][2];
+			float d65 = i[3];
+			x += d65 * t * i[0];
+			y += d65 * t * i[1];
+			z += d65 * t * i[2];
 			w += 5.0f;
 		}
 

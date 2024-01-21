@@ -100,8 +100,8 @@ static const std::array<std::array<float, 4>, 81> CIE_DATA = { {
 
 static float calcScaleFactor() {
     float k = 0.0f;
-    for (size_t i = 0; i < CIE_DATA.size(); ++i)
-        k += CIE_DATA[i][3] * CIE_DATA[i][1];
+    for (auto& i : CIE_DATA)
+        k += i[3] * i[1];
     return 1.0f / k;
 }
 
@@ -123,12 +123,12 @@ static RGB beerSDToSRGB(const float& a430, const float& l) {
     float y = 0.0f;
     float z = 0.0f;
     float w = 380.0f;
-    for (size_t i = 0; i < CIE_DATA.size(); ++i) {
+    for (auto& i : CIE_DATA) {
         float t = pow(10.0f, -a430 * l * (0.02465f * exp(-(w - 430.0f) / 17.591f) + 0.97535f * exp(-(w - 430.0f) / 82.122f)));
-        float d65 = CIE_DATA[i][3];
-        x += d65 * t * CIE_DATA[i][0];
-        y += d65 * t * CIE_DATA[i][1];
-        z += d65 * t * CIE_DATA[i][2];
+        float d65 = i[3];
+        x += d65 * t * i[0];
+        y += d65 * t * i[1];
+        z += d65 * t * i[2];
         w += 5.0f;
     }
 

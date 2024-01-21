@@ -95,8 +95,8 @@ CIE_DATA = [
 
 def calc_scale_factor():
     k = 0.0
-    for i in range(len(CIE_DATA)):
-        k += CIE_DATA[i][3] * CIE_DATA[i][1]
+    for i in CIE_DATA:
+        k += i[3] * i[1]
     return 1.0 / k
 
 K = calc_scale_factor()
@@ -120,12 +120,12 @@ def beer_sd_to_srgb(a430, l):
     y = 0.0
     z = 0.0
     w = 380.0
-    for i in range(len(CIE_DATA)):
+    for i in CIE_DATA:
         t = math.pow(10.0, -a430 * l * (0.02465 * math.exp(-(w - 430.0) / 17.591) + 0.97535 * math.exp(-(w - 430.0) / 82.122)))
-        d65 = CIE_DATA[i][3]
-        x += d65 * t * CIE_DATA[i][0]
-        y += d65 * t * CIE_DATA[i][1]
-        z += d65 * t * CIE_DATA[i][2]
+        d65 = i[3]
+        x += d65 * t * i[0]
+        y += d65 * t * i[1]
+        z += d65 * t * i[2]
         w += 5.0
 
     x *= K
