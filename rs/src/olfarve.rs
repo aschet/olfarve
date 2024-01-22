@@ -104,6 +104,8 @@ pub mod olfarve {
         1.0 / k
     };
 
+    // The default transmission path in cm. Set to typical sample glass width as specified by the BJCP color guide.
+    // https://www.bjcp.org/education-training/education-resources/color-guide
     pub const DEFAULT_PATH: f32 = 5.0;
 
     pub fn transfer_color_component(t: f32) -> f32 {
@@ -145,14 +147,17 @@ pub mod olfarve {
         [r, g, b]
     }
 
+    // Determine a color in the sRGB space in relative intensity for a given SRM rating and transmission path in cm (e.g. glass width)
     pub fn srm_to_srgb(srm: f32, path_cm: f32) -> [f32; 3] {
         beer_sd_to_srgb(srm / 12.7, path_cm)
     }
 
+    // Determine a color in the sRGB space in relative intensity for a given EBC rating and transmission path in cm (e.g. glass width)
     pub fn ebc_to_srgb(ebc: f32, path_cm: f32) -> [f32; 3] {
         beer_sd_to_srgb(ebc / 25.0, path_cm)
     }
 
+    // Convert a relative intensity RGB triplet into textual hex representation
     pub fn rgb_to_hex(rgb: [f32; 3]) -> String {
         format!(
             "#{:02x}{:02x}{:02x}",
