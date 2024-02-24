@@ -1,4 +1,4 @@
-# Øl farve: SRM/EBC sRGB color simulation for everyone
+# Øl farve: SRM/EBC sRGB beer color simulation for everyone
 
 <p align="center">
   <img src="/colors.png?raw=true">
