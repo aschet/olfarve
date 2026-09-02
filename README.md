@@ -12,4 +12,8 @@ This model was presented in great detail by A. J. deLange in [Bamforth's Brewing
 
 Parameters that affect the perception of beer color include ambient light and the transmittance of light. The larger the width of a glass, the darker the beer inside appears. The deLange model can take this effect into account by means of a scaling factor (path). In the sample programs, this is preset to 5 cm following the BJCP Color Guide.
 
-If you would like to help improve the quality of the code in this repository, please create a pull request!
+## Packages
+
+Some implementations are retained here for historical reasons, while slightly different versions are maintained separately as native packages for their respective languages:
+- Python: https://github.com/aschet/pyolfarve
+- JavaScript: https://github.com/aschet/jsolfarve
