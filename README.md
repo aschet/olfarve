@@ -21,3 +21,4 @@ Some implementations are retained here for historical reasons, while slightly di
 - Java: https://github.com/aschet/jolfarve
 - JavaScript: https://github.com/aschet/jsolfarve
 - Python: https://github.com/aschet/pyolfarve
+- Rust: https://github.com/aschet/rsolfarve
