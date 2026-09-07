@@ -17,5 +17,6 @@ Parameters that affect the perception of beer color include ambient light and th
 Some implementations are retained here for historical reasons, while slightly different versions are maintained separately as native packages for their respective languages:
 - C++: https://github.com/aschet/cppolfarve
 - C#: https://github.com/aschet/csolfarve
-- Python: https://github.com/aschet/pyolfarve
+- Java: https://github.com/aschet/jolfarve
 - JavaScript: https://github.com/aschet/jsolfarve
+- Python: https://github.com/aschet/pyolfarve
